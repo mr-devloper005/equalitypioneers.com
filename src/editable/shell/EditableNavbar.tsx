@@ -29,9 +29,7 @@ export function EditableNavbar() {
 
       <nav className="mx-auto flex min-h-[84px] w-full max-w-[var(--editable-container)] items-center gap-6 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex shrink-0 items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--slot4-accent)] text-[var(--slot4-on-accent)] shadow-[0_6px_16px_rgba(140,16,7,0.28)] transition group-hover:brightness-110">
-            <img src="/favicon.png?v=20260413" alt={SITE_CONFIG.name} className="h-7 w-7 object-contain" />
-          </span>
+          <img src="/favicon.png?v=20260413" alt={SITE_CONFIG.name} className="h-10 w-10 object-contain transition group-hover:brightness-110" />
           <span className="hidden min-w-0 md:block">
             <span className="editable-display block max-w-[220px] truncate text-2xl font-semibold leading-none tracking-[-0.01em]">{SITE_CONFIG.name}</span>
             <span className="mt-1.5 block max-w-[220px] truncate text-[10px] font-semibold uppercase tracking-[0.28em] text-[var(--slot4-accent)]">
