@@ -8,6 +8,36 @@ import type { SitePost } from '@/lib/site-connector'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { EditableArticleComments } from '@/editable/components/EditableArticleComments'
 import { getTaskTheme, taskThemeStyle } from '@/editable/theme/task-themes'
+import { Ads } from '@/lib/ads'
+
+// One ad per detail page, varied by content type so the same slot/size isn't
+// repeated across every page.
+const detailAdSlot: Record<TaskKey, string> = {
+  article: 'article-bottom',
+  listing: 'sidebar',
+  classified: 'in-feed',
+  image: 'header',
+  sbm: 'footer',
+  pdf: 'sidebar',
+  profile: 'footer',
+}
+
+function DetailAd({ task }: { task: TaskKey }) {
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-6">
+      <Ads slot={detailAdSlot[task]} showLabel eager className="mx-auto w-full" />
+    </div>
+  )
+}
+
+// Narrower variant for sticky aside columns (e.g. listing/pdf detail sidebars).
+function DetailAsideAd({ task }: { task: TaskKey }) {
+  return (
+    <div className="py-2">
+      <Ads slot={detailAdSlot[task]} showLabel eager className="mx-auto w-full" />
+    </div>
+  )
+}
 
 export const revalidate = 3
 
@@ -203,6 +233,7 @@ function ArticleDetail({ post, related, comments }: { post: SitePost; related: S
         </div>
         {images[0] ? <img src={images[0]} alt="" className="mt-10 aspect-[16/9] w-full rounded-[var(--tk-radius)] border border-[var(--tk-line)] object-cover" /> : null}
         <BodyContent post={post} />
+        <DetailAd task="article" />
         <EditableArticleComments slug={post.slug} comments={comments} />
       </article>
       <RelatedStrip task="article" related={related} />
@@ -243,6 +274,7 @@ function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] 
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
           {mapSrc ? <MapBox src={mapSrc} label={address || post.title} /> : null}
           <ContactAction website={website} phone={phone} email={email} />
+          <DetailAsideAd task="listing" />
           <RelatedPanel task="listing" post={post} related={related} />
         </aside>
       </div>
@@ -281,6 +313,7 @@ function ClassifiedDetail({ post, related }: { post: SitePost; related: SitePost
         </aside>
         <article className="min-w-0">
           <ImageStrip images={images} label="Offer images" large />
+          <DetailAd task="classified" />
           <BodyContent post={post} />
           <ContactAction website={website} phone={phone} email={email} />
         </article>
@@ -298,6 +331,7 @@ function ImageDetail({ post, related }: { post: SitePost; related: SitePost[] })
     <>
       <section className="mx-auto max-w-[var(--editable-container)] px-6 py-14 sm:py-20 lg:px-8">
         <BackLink task="image" />
+        <DetailAd task="image" />
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.4fr_0.6fr]">
           <div className="columns-1 gap-5 [column-fill:_balance] sm:columns-2">
             {gallery.map((image, index) => (
@@ -336,6 +370,7 @@ function BookmarkDetail({ post, related }: { post: SitePost; related: SitePost[]
           </Link>
         ) : null}
         <BodyContent post={post} />
+        <DetailAd task="sbm" />
       </article>
       <RelatedStrip task="sbm" related={related} />
     </>
@@ -376,6 +411,7 @@ function PdfDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
               <Link href={fileUrl} target="_blank" rel="noreferrer" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--tk-accent)] px-5 py-3 text-sm font-semibold text-[var(--tk-on-accent)] transition hover:opacity-90">Download <Download className="h-4 w-4" /></Link>
             </div>
           ) : null}
+          <DetailAsideAd task="pdf" />
           <RelatedPanel task="pdf" post={post} related={related} />
         </aside>
       </div>
@@ -409,6 +445,7 @@ function ProfileDetail({ post, related }: { post: SitePost; related: SitePost[] 
             <Kicker task="profile">Profile</Kicker>
             <BodyContent post={post} />
             <ImageStrip images={images.slice(1)} label="Gallery" />
+            <DetailAd task="profile" />
           </article>
         </div>
       </section>

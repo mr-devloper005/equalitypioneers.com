@@ -9,6 +9,19 @@ import { taskPageMetadata } from '@/config/site.content'
 import { taskPageVoices } from '@/editable/content/task-pages.content'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { getTaskTheme, taskThemeStyle } from '@/editable/theme/task-themes'
+import { Ads } from '@/lib/ads'
+
+// One ad per archive page, varied by content type so the same slot/size isn't
+// repeated across every page.
+const archiveAdSlot: Record<TaskKey, string> = {
+  article: 'header',
+  listing: 'in-feed',
+  classified: 'footer',
+  image: 'in-feed',
+  sbm: 'header',
+  pdf: 'footer',
+  profile: 'sidebar',
+}
 
 export const revalidate = 3
 
@@ -138,6 +151,10 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
             </div>
           </div>
         </header>
+
+        <div className="mx-auto max-w-6xl px-4 py-6">
+          <Ads slot={archiveAdSlot[task]} showLabel eager className="mx-auto w-full" />
+        </div>
 
         <section className="mx-auto max-w-[var(--editable-container)] px-6 py-16 sm:py-20 lg:px-8">
           {posts.length ? (
