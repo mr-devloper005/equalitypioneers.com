@@ -10,6 +10,8 @@ export function EditableFooter() {
   const year = new Date().getFullYear()
   const { session, logout } = useEditableLocalAuthSession()
 
+
+
   return (
     <footer className="bg-[var(--editable-footer-bg)] text-[var(--editable-footer-text)]">
       <div className="mx-auto max-w-[var(--editable-container)] px-4 py-16 sm:px-6 lg:px-8">
@@ -25,7 +27,11 @@ export function EditableFooter() {
               <span className="h-1.5 w-8 rounded-full bg-[var(--editable-footer-text)]/25" />
               <span className="h-1.5 w-8 rounded-full bg-[var(--editable-footer-text)]/25" />
             </div>
+
+            
           </div>
+
+
 
           <div>
             <h3 className="text-[11px] font-bold uppercase tracking-[0.26em] text-[var(--editable-footer-text)]/50">Site</h3>
